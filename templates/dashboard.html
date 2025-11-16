@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Realtime Import Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: #111; color: #fff; font-family: Arial; }
+        h1 { text-align: center; color:#00eaff; }
+        .container { width: 90%; margin: auto; }
+        canvas { background: #222; padding: 15px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Userbot Import Dashboard — Real-time</h1>
+    <div class="container">
+        <canvas id="lineChart"></canvas>
+        <br>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+<script>
+let lineCtx = document.getElementById('lineChart').getContext('2d');
+let pieCtx = document.getElementById('pieChart').getContext('2d');
+
+let lineData = {
+    labels: [],
+    datasets: [{ label: "Imported", data: [], borderWidth: 2 }]
+};
+
+let pieData = {
+    labels: ['Success', 'Failed', 'Skipped'],
+    datasets: [{ data: [0,0,0] }]
+};
+
+let lineChart = new Chart(lineCtx, { type: 'line', data: lineData });
+let pieChart = new Chart(pieCtx, { type: 'pie', data: pieData });
+
+const evtSource = new EventSource('/stream');
+evtSource.onmessage = function(event) {
+    let data = JSON.parse(event.data);
+
+    lineChart.data.labels.push(new Date().toLocaleTimeString());
+    lineChart.data.datasets[0].data.push(data.imported || 0);
+    lineChart.update();
+
+    pieChart.data.datasets[0].data = [data.imported || 0, data.failed || 0, data.skipped || 0];
+    pieChart.update();
+};
+</script>
+
+</body>
+</html>
