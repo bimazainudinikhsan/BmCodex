@@ -1,35 +1,27 @@
 {
-  "name": "BmCodex Userbot",
-  "description": "Telegram Userbot + Real-time Dashboard deployed via Heroku.",
+  "name": "BmCodex Premium",
+  "description": "Premium Telethon Userbot",
   "repository": "https://github.com/bimazainudinikhsan/BmCodex",
-  "logo": "https://www.herokucdn.com/deploy/button.svg",
-  "keywords": [
-    "telegram",
-    "userbot",
-    "telethon",
-    "dashboard",
-    "python",
-    "heroku"
-  ],
   "env": {
     "API_ID": {
-      "description": "API ID dari https://my.telegram.org/auth",
       "required": true
     },
     "API_HASH": {
-      "description": "API HASH dari https://my.telegram.org/auth",
       "required": true
     },
-    "SESSION": {
-      "description": "Session string dari Telethon",
+    "SESSION_STRING": {
       "required": true
-    },
-    "DASHBOARD_ENDPOINT": {
-      "description": "Endpoint dashboard untuk menerima log.",
-      "value": "https://APPNAME.herokuapp.com/log"
     }
   },
-  "scripts": {
-    "postdeploy": "echo 'Userbot berhasil dideploy. Aktifkan dyno worker & web di Heroku.'"
-  }
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
 }

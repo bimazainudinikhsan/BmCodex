@@ -1,1 +1,1 @@
-web: python supervisor.py
+worker: python main.py
