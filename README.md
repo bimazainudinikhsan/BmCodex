@@ -39,3 +39,10 @@ BmCodex/
 └── modules/
     └── premium_invite_engine.py
 ```
+
+
+### New Commands:
+```
+.inviteall @target
+.invitemember 10 @target
+```
